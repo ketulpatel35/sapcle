@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ESS Employee Advance Menu -->
+    <menuitem name="Advance" id="ess_employee_advance_main_menu"
+              web_icon="hr_emp_advance,static/description/icon.png"
+              groups="hr_emp_advance.group_employee_advance_normal_user"
+              sequence="5"/>
+
+    <menuitem name="Advance" id="ess_advance_menu"
+              parent="ess_employee_advance_main_menu"
+              groups="hr_emp_advance.group_employee_advance_normal_user"
+              sequence="1"/>
+
+    <menuitem name="Advance Request" id="ess_employee_advance_menu"
+              action="employee_advance_action_view_ess"
+              parent="ess_advance_menu"
+              groups="hr_emp_advance.group_employee_advance_normal_user"
+              sequence="1"/>
+
+    <menuitem name="Advance Request to Approve"
+              id="ess_employee_advance_to_approve_menu"
+              action="employee_advance_action_view_mss"
+              parent="ess_advance_menu"
+              groups="hr_emp_advance.group_employee_advance_manager"
+              sequence="2"/>
+
+    <!-- MSS Employee Advance Menu -->
+    <!--<menuitem name="Employee Advance" id="mss_employee_advance_main_menu"-->
+              <!--parent="emp_self_services.mss_main_menu"-->
+              <!--groups="hr_emp_advance.group_employee_advance_manager"-->
+              <!--sequence="5"/>-->
+
+    <!--<menuitem name="Advance Request" id="mss_employee_advance_menu"-->
+              <!--action="employee_advance_action_view_mss"-->
+              <!--groups="hr_emp_advance.group_employee_advance_manager"-->
+              <!--parent="mss_employee_advance_main_menu"-->
+              <!--sequence="1"/>-->
+
+</odoo>

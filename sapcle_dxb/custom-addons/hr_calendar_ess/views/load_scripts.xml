@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- We are making changes on assets backend -->
+        <template id="load_requred_js_assets_backend"
+                  name="Assets Backend"
+                  inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/hr_calendar_ess/static/src/js/calendar_model.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

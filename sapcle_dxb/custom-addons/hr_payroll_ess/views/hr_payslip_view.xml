@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- payslip -->
+    <record id="view_hr_employee_payslip_form" model="ir.ui.view">
+        <field name="name">hr.payslip.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+        <field name="arch" type="xml">
+            <button name="action_payslip_done" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager</attribute>
+            </button>
+            <button name="refund_sheet" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager</attribute>
+            </button>
+            <button name="action_payslip_draft" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager</attribute>
+            </button>
+            <button name="compute_sheet" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager</attribute>
+            </button>
+            <button name="action_payslip_cancel" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager</attribute>
+            </button>
+            <button name="compute_sheet" position="after">
+                <button name='action_payslip_paid' string="Pay"
+                        states="done" class="btn-primary" type="object"
+                        groups="hr_payroll_ess.group_hr_payroll_finance_manager"/>
+            </button>
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">draft,done,paid</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="employee_view_hr_payslip_tree" model="ir.ui.view">
+        <field name="name">employee.hr.payslip.tree</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="groups">hr_payroll.group_hr_payroll_manager</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="employee_payslip_tree_view" model="ir.ui.view">
+        <field name="name">hr.payslip.tree</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <tree
+                    decoration-info="state in ('confirm','hr_check','accont_check')" decoration-muted="state == 'cancel'" create="false" edit="false" editable="bottom" string="Payslips">
+                <field name="number"/>
+                <field name="employee_id"/>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="payslip_run_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- hr_holidays.request_approve_holidays -->
+    <record model="ir.actions.act_window" id="action_employee_payslip">
+        <field name="name">My Payslips</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+         <field name="view_id" ref="employee_payslip_tree_view"/>
+        <field name="context">{}</field>
+        <field name="domain">
+            [('employee_id.user_id','=',uid)]
+        </field>
+    </record>
+
+</odoo>

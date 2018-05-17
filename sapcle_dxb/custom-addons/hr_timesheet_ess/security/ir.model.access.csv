@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_n_account_analytic_line,access.n.account.analytic.line,analytic.model_account_analytic_line,hr_timesheet_ess.group_hr_timesheet_normal_user,1,1,1,1
+access_n_revised_timesheet_line,access.n.revised.timesheet.line,model_revised_timesheet_line,hr_timesheet_ess.group_hr_timesheet_normal_user,1,1,1,1
+access_n_timesheet_checklist,access.n.timesheet.checklist,hr_timesheet_ess.model_timesheet_checklist,hr_timesheet_ess.group_hr_timesheet_normal_user,1,1,1,0
+access_n_timesheet_projects,access.n.timesheet.projects,hr_timesheet_ess.model_timesheet_projects,hr_timesheet_ess.group_hr_timesheet_normal_user,1,1,1,1
+access_n_project_project,access.n.project.project,project.model_project_project,hr_timesheet_ess.group_hr_timesheet_normal_user,1,0,0,0
+access_hr_timesheet_checklist,access.hr.timesheet.checklist,hr_timesheet_ess.model_timesheet_checklist,hr_timesheet.group_timesheet_manager,1,1,1,1

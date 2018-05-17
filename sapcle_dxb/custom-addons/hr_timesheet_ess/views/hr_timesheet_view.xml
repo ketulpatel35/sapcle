@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- form view -->
+    <record id="less_option_hr_timesheet_line_form"
+        model="ir.ui.view">
+        <field name="name">account.analytic.line.form.view</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id"
+               ref="hr_timesheet.hr_timesheet_line_form"/>
+        <field name="groups_id"
+               eval="[(6, 0, [ref('hr_timesheet_ess.group_hr_timesheet_normal_user'), ref('hr_timesheet.group_hr_timesheet_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form"
+                   position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="less_option_hr_timesheet_line_kanban" model="ir.ui.view">
+        <field name="name">account.analytic.line.kanban.view</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id"
+               ref="hr_timesheet.view_kanban_account_analytic_line"/>
+        <field name="groups_id"
+               eval="[(6, 0, [ref('hr_timesheet_ess.group_hr_timesheet_normal_user'), ref('hr_timesheet.group_hr_timesheet_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban"
+                   position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- tree view -->
+    <record id="less_option_hr_timesheet_line_tree" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.view</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id"
+               ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="groups_id"
+               eval="[(6, 0, [ref('hr_timesheet_ess.group_hr_timesheet_normal_user'), ref('hr_timesheet.group_hr_timesheet_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree"
+                   position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_timesheet.act_hr_timesheet_line"
+            model="ir.actions.act_window">
+        <field name="name">My Timesheets</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('project_id', '!=', False), ('user_id', '=', uid)]</field>
+        <field name="context">{"search_default_month":1,
+            'search_default_group_calendar_year':1}</field>
+        <field name="search_view_id"
+               ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to record activities.
+          </p><p>
+            You can register and track your workings hours by project every
+            day. Every time spent on a project will become a cost and can be re-invoiced to
+            customers if required.
+          </p>
+        </field>
+    </record>
+
+</odoo>

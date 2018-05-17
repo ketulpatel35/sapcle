@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Payslip -->
+    <record model="ir.ui.menu" id="hr_payroll.menu_hr_payroll_root">
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_payroll.group_hr_payroll_manager'), ref('hr_payroll.group_hr_payroll_user')])]"/>
+    </record>
+
+    <menuitem name="My Payslip" id="employee_payslip_main_menu"
+              web_icon="hr_payroll_ess,static/description/payslip_icon.png"
+              groups="group_hr_payroll_normal_user"
+              sequence="1"/>
+
+    <menuitem name="My Payslip" id="employee_payslip_sub_menu"
+              action="action_employee_payslip"
+              parent="employee_payslip_main_menu"
+              groups="group_hr_payroll_normal_user"
+              sequence="1"/>
+
+</odoo>

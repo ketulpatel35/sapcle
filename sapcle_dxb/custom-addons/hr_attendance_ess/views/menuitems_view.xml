@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Attendance Menu -->
+    <!--<menuitem name="My Attendance" id="ess_employee_attendance_menu"-->
+              <!--action="hr_my_attendance_employee_action"-->
+              <!--parent="emp_self_services.ess_main_menu"-->
+              <!--sequence="2"/>-->
+
+</odoo>

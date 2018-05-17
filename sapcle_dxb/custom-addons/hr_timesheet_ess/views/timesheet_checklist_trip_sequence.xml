@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- Sequences for timesheet.checklist -->
+        <record id="seq_timesheet_checklist" model="ir.sequence">
+            <field name="name">Timesheet Checklist</field>
+            <field name="code">timesheet.checklist</field>
+            <field name="prefix">TC</field>
+            <field name="padding">6</field>
+        </record>
+
+    </data>
+</openerp>

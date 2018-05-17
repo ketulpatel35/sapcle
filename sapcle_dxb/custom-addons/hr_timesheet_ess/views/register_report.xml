@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="paperformat_for_timesheets" model="report.paperformat">
+        <field name="name">Timesheet Report</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">12</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+        <report
+                id="employee_enter_timesheet_report"
+                model="timesheet.checklist"
+                string="Timesheet Report"
+                report_type="qweb-pdf"
+                name="hr_timesheet_ess.employee_timesheet_report_temp"
+                file="hr_timesheet_ess.employee_timesheet_report_temp"
+                paperformat="hr_timesheet_ess.paperformat_for_timesheets"
+                menu="True"/>
+    </data>
+</odoo>

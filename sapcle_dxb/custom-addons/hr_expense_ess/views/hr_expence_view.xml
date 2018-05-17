@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+    <!-- Expense form inherit -->
+    <record id="employee_hr_expense_form_view" model="ir.ui.view">
+        <field name="name">hr.expense.form.view.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="options">
+                    {'no_open': True,'no_create': True,'no_quick_create':
+                    True,'no_create_edit': True}
+                </attribute>
+            </field>
+            <field name="employee_id" position="attributes">
+                <attribute name="options">
+                    {'no_open': True,'no_create': True,'no_quick_create':
+                    True,'no_create_edit': True}
+                </attribute>
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="payment_mode" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- inherit form view ess -->
+    <record id="employee_expense_form_view_ess" model="ir.ui.view">
+        <field name="name">employee.expense.sheet.ess</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <button name="approve_expense_sheets" position="attributes">
+                <attribute name="groups">hr_expense.group_hr_expense_manager
+                </attribute>
+                <attribute name="string">Verified</attribute>
+            </button>
+            <button name="%(hr_expense.hr_expense_refuse_wizard_action)d"
+                    position="attributes">
+                <attribute name="groups">hr_expense.group_hr_expense_manager
+                </attribute>
+            </button>
+            <button name="action_sheet_move_create" position="replace">
+                <button name="approved_expense_posted" states="approve"
+                        string="Post" type="object"
+                        groups="hr_expense_ess.group_finance_expense_manager"
+                        class="oe_highlight o_expense_sheet_approve"/>
+            </button>
+            <button
+                    name="%(hr_expense.hr_expense_sheet_register_payment_wizard_action)d"
+                    position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <field name="name" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('state', '!=', 'draft')]}
+                </attribute>
+            </field>
+            <field name="payment_mode" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <button name="action_get_attachment_view" position="replace">
+                <button name="action_open_attachment_view"
+                        class="oe_stat_button"
+                        icon="fa-book"
+                        type="object" string="Documents">
+                </button>
+            </button>
+            <button name="%(hr_expense.hr_expense_refuse_wizard_action)d"
+                    position="replace">
+                <button name="%(hr_expense_ess.act_open_expense_refuse_wizard)d"
+                        type="action" string="Refuse"
+                        groups="hr_expense.group_hr_expense_manager"
+                        states='submit,approve'/>
+            </button>
+            <field name="state" position="after">
+                <button name="action_submit_for_manager_approval"
+                        type="object"
+                        string="Submit for Approval "
+                        class="btn-primary"
+                        states="draft"/>
+            </field>
+            <xpath expr="//notebook" position="replace">
+                <notebook>
+                    <page string="Expense Lines">
+                        <field name="expense_line_ids" nolabel="1"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"
+                               options="{'not_delete': True, 'no_create': True}"
+                               context="{'expense_adding_line': True}">
+                            <tree decoration-danger="is_refused"
+                                  editable="bottom">
+                                <field name="date"/>
+                                <field name="product_id"
+                                       options="{'no_edit': True, 'no_create': True}"/>
+                                <field name="name"/>
+                                <field name="unit_amount" string="Amount"/>
+                                <field name="state" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="is_refused" invisible="True"/>
+                                <field name="analytic_account_id"
+                                       groups="analytic.group_analytic_accounting"/>
+                                <field name="message_unread" invisible="1"/>
+                                <field name="attachment_number" string=" "
+                                       invisible="1"/>
+                                <button name="action_get_attachment_view"
+                                        invisible="1"
+                                        string="View Attachments" type="object"
+                                        icon="fa-paperclip"/>
+                                <field name="tax_ids" widget="many2many_tags"
+                                       invisible="1"/>
+                                <field name="total_amount" widget="monetary"
+                                       invisible="1"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <button name="%(hr_expense.hr_expense_refuse_wizard_action)d"
+                                        states="reported, refused"
+                                        string="Refuse"
+                                        invisible="1"
+                                        context="{'hr_expense_refuse_model':'hr.expense'}"
+                                        type="action"
+                                        groups="hr_expense.group_hr_expense_user, account.group_account_user"
+                                        icon="fa-times"
+                                        attrs="{'invisible': ['|', ('is_refused', '=', True),('state', 'in', ['done'])]}"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Notes">
+                        <field name="note_ids" nolabel="1">
+                            <tree editable="bottom" delete="false">
+                                <field name="employee_id" style="width:30%%"
+                                       readonly="1"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//notebook" position="after">
+                <field name="refuse_reason" readonly="1" nolabel="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Expense tree inherit -->
+    <record id="view_expenses_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.tree.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.view_expenses_tree"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="groups">
+                    hr_expense.group_employee_advance_manager
+                </attribute>
+            </field>
+        </field>
+    </record>
+
+    <!--<record id="expense_form_view_inherit_for_fooer" model="ir.ui.view">-->
+    <!--<field name="name">hr.expense.form</field>-->
+    <!--<field name="model">hr.expense</field>-->
+    <!--<field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>-->
+    <!--<field name="arch" type="xml">-->
+
+    <!--<xpath expr="//form/sheet" position="after">-->
+    <!--<footer>-->
+    <!--<button name="create_expense_line" string="Save"-->
+    <!--type="object"/>-->
+    <!--<button string="Cancel" class="btn-default"-->
+    <!--special="cancel"/>-->
+    <!--</footer>-->
+    <!--</xpath>-->
+
+    <!--</field>-->
+    <!--</record>-->
+
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="expense_form_view_inherit_service_panel" model="ir.ui.view">
+        <field name="name">expense.sheet.service.panel.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="options">
+                    {'no_open': True,'no_create': True,'no_quick_create':
+                    True,'no_create_edit': True}
+                </attribute>
+                <attribute name="readonly">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Action Expense -->
+    <record id="action_employee_expense_requests"
+            model="ir.actions.act_window">
+        <field name="name">Expense Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id.user_id.id','=',uid)]</field>
+        <field name="filter" eval="True"/>
+        <field name="context">
+            {'readonly_by_pass': True}
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Expense Request.
+            </p>
+            <p>
+                Press create button to apply for any expense request, The
+                system
+                will take care from the approval.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.menu" id="hr_timesheet.timesheet_menu_root">
+        <field name="groups_id"
+             eval="[(6,0,[ref('hr_timesheet.group_timesheet_manager'), ref('hr_timesheet.group_hr_timesheet_user'), ref('group_hr_timesheet_normal_user')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_timesheet.menu_hr_time_tracking">
+        <field name="groups_id"
+             eval="[(6,0,[ref('hr_timesheet.group_timesheet_manager')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_timesheet.timesheet_menu_activity_all">
+        <field name="groups_id"
+             eval="[(6,0,[ref('hr_timesheet.group_timesheet_manager')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_timesheet.timesheet_menu_activity_mine">
+        <field name="groups_id"
+             eval="[(6,0,[ref('hr_timesheet.group_timesheet_manager')])]"/>
+    </record>
+
+    <menuitem name="Timesheet" id="employee_enter_timesheet_main_menu"
+              groups="group_hr_timesheet_normal_user"
+              parent="hr_timesheet.timesheet_menu_root"
+              sequence="6"/>
+
+    <menuitem name="My Timesheet" id="employee_enter_timesheet_sub_menu"
+              parent="employee_enter_timesheet_main_menu"
+              groups="group_hr_timesheet_normal_user"
+              action="timesheet_checklist_action_view"
+              sequence="1"/>
+
+    <menuitem name="Verified"
+              id="timesheet_to_approve_sub_menu"
+              parent="employee_enter_timesheet_main_menu"
+              groups="hr_timesheet.group_hr_timesheet_user"
+              action="mss_timesheet_checklist_action_view"
+              sequence="1"/>
+
+    <menuitem name="Approved"
+              id="timesheet_to_hr_approve_sub_menu"
+              parent="employee_enter_timesheet_main_menu"
+              groups="hr_timesheet.group_timesheet_manager"
+              action="mss_timesheet_checklist_hr_action_view"
+              sequence="1"/>
+
+    <menuitem name="All Timesheet"
+              id="timesheet_to_all_approve_sub_menu"
+              parent="employee_enter_timesheet_main_menu"
+              groups="hr_timesheet.group_timesheet_manager"
+              action="mss_timesheet_checklist_all_action_view"
+              sequence="1"/>
+
+</odoo>

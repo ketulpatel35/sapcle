@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_normal_user_hr_payslip_employee_advance,access.normal.user.hr.payslip.employee.advance,hr_emp_advance.model_hr_payslip_employee_advance,hr_emp_advance.group_employee_advance_normal_user,1,1,1,0
+access_normal_user_employee_advance,access.normal.user.employee.advance,hr_emp_advance.model_employee_advance,hr_emp_advance.group_employee_advance_normal_user,1,1,1,0
+access_normal_user_hr_contract,access.normal.user.hr.contract,hr_contract.model_hr_contract,hr_emp_advance.group_employee_advance_normal_user,1,0,0,0
+access_normal_user_hr_salary_rule,access.normal.user.hr.salary.rule,hr_payroll.model_hr_salary_rule,hr_emp_advance.group_employee_advance_normal_user,1,0,0,0
+access_normal_user_hr_salary_rule_category,access.normal.user.hr.salary.rule.category,hr_payroll.model_hr_salary_rule_category,hr_emp_advance.group_employee_advance_normal_user,1,0,0,0
+access_normal_user_employee_advance_note,access.normal.user.employee.advance.note,model_employee_advance_note,hr_emp_advance.group_employee_advance_normal_user,1,1,1,1
+
+access_manager_hr_payslip_employee_advance,access.manager.hr.payslip.employee.advance,hr_emp_advance.model_hr_payslip_employee_advance,hr_emp_advance.group_employee_advance_manager,1,1,1,1
+access_manager_employee_advance,access.manager.employee.advance,hr_emp_advance.model_employee_advance,hr_emp_advance.group_employee_advance_manager,1,1,1,1
+access_manager_hr_contract,access.manager.hr.contract,hr_contract.model_hr_contract,hr_emp_advance.group_employee_advance_manager,1,0,0,0
+access_manager_hr_salary_rule,access.manager.hr.salary.rule,hr_payroll.model_hr_salary_rule,hr_emp_advance.group_employee_advance_manager,1,0,0,0
+access_manager_hr_salary_rule_category,access.manager.hr.salary.rule.category,hr_payroll.model_hr_salary_rule_category,hr_emp_advance.group_employee_advance_manager,1,0,0,0

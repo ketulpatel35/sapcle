@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_employee_profile_form" model="ir.ui.view">
+        <field name="name">hr.employee.profile.form</field>
+        <field name="model">hr.employee</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="replace">
+                <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object" groups="hr.group_hr_user"
+                            invisible="1"
+                            class="oe_stat_button" icon="fa-archive">
+                        <field name="active" widget="boolean_button"
+                            options='{"terminology": "archive"}'/>
+                    </button>
+                    <button  class="oe_stat_button"
+                             groups="hr.group_hr_user"
+                             name="%(action_view_employee_document_form_view)d"
+                             type="action" icon="fa-files-o">
+                        <field string="Documents" name="document_count"
+                               widget="statinfo"/>
+                    </button>
+                </div>
+            </div>
+            <field name="category_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="user_id" position="after">
+                <field name="joining_date"/>
+            </field>
+            <page name="hr_settings" position='attributes'>
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </page>
+            <xpath expr="//page[@name='public']/group[1]/group[2]"
+                   position='attributes'>
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <div class="oe_chatter" position="replace">
+                <div></div>
+            </div>
+        </field>
+    </record>
+
+    <record model="ir.actions.server"
+            id="hr_employee_my_profile_server_action">
+        <field name="name">My Profile</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">
+ids = env['hr.employee'].search([('user_id', '=', user.id)]).ids
+action_data = {
+            "name": "Total Data (From Server Action)",
+            "type": "ir.actions.act_window",
+            "view_type": "form",
+            "view_mode": "tree,form",
+            "res_model": 'hr.employee',
+            }
+if ids:
+    action_data.update({
+            "view_mode": "form,tree",
+            "res_id": ids and ids[0] or None,
+            })
+action = action_data
+        </field>
+    </record>
+
+    <!--<record id="action_employee_profile" model="ir.actions.act_window">-->
+        <!--<field name="name">My Profile</field>-->
+        <!--<field name="res_model">hr.employee</field>-->
+        <!--<field name="view_type">form</field>-->
+        <!--<field name="view_mode">tree,form</field>-->
+        <!--<field name="domain"> [('user_id','=',uid)] </field>-->
+        <!--<field name="context">{}</field>-->
+    <!--</record>-->
+
+</odoo>

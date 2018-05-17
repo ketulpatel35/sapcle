@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="employee_timesheet_report_temp">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="hr_timesheet_ess.employee_timesheet_report_header_footer">
+                    <div class="page" >
+                        <b>
+                            Submitted By : <t t-esc="o.employee_id.name"/>
+                        </b><br/>
+                        <b>
+                            <t t-set="_dates"
+                               t-value="o.get_dates(o.month, o.year)"/>
+                            <t t-esc="_dates.get('f_date')"/> To <t
+                                t-esc="_dates.get('l_date')"/>
+                        </b><br/><br/>
+                        <table class="table table-condensed" width="100%">
+                            <tr>
+                                <td><b>Date</b></td>
+                                <!--<td><b>Project</b></td>-->
+                                <td><b>Day</b></td>
+                                <td><b>Attendance</b></td>
+                                <td><b>Duration</b></td>
+                            </tr>
+                            <t t-foreach="o.timesheet_line_ids"
+                                           t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line.date"
+                                           t-esc-options='{"widget": "date"}'/>
+                                    </td>
+                                    <!--<td><t-->
+                                            <!--t-esc="line.project_id.name or ''"/></td>-->
+                                    <td><t t-esc="line.week_day"/></td>
+                                    <td>
+                                        <t t-if="line.ts_status == 'fd'">
+                                            Full Day
+                                        </t>
+                                        <t t-if="line.ts_status == 'hd'">
+                                            Half Day
+                                        </t>
+                                        <t t-if="line.ts_status == 'wo'">
+                                            Week Off
+                                        </t>
+                                        <t t-if="line.ts_status == 'l'">
+                                            Leave
+                                        </t>
+                                        <t t-if="line.ts_status == 'ph'">
+                                            Public Holiday
+                                        </t>
+                                    </td>
+                                    <td><t t-esc="line.unit_amount"/></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="employee_timesheet_report_header_footer">
+        <t t-call="hr_timesheet_ess.employee_timesheet_report_header"/>
+        <t t-raw="0"/>
+        <t t-call="hr_timesheet_ess.employee_timesheet_report_footer"/>
+    </template>
+
+    <template id="employee_timesheet_report_header">
+        <div class="header">
+            <div class="col-xs-8">
+
+            </div>
+            <div class="col-xs-4 text-right">
+                <img class="img-responsive"
+                     style="padding-bottom:1px;margin-top:5px;"
+                     src="/hr_timesheet_ess/static/description/company_logo.png"
+                     width="150px" height="60px"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="employee_timesheet_report_footer">
+        <div class="footer">
+            <div align="right">
+                For any Clarifications - Please contact MyHR@sapcle.com
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="expense_refuse_wizard_view" model="ir.ui.view">
+            <field name="name">expense.refuse.wizard.view</field>
+            <field name="model">expense.refuse.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Expense Refuse Wizard">
+                    <group>
+                        <field name="reason"/>
+                    </group>
+                    <footer>
+                        <button name="button_confirm"
+                                string="Confirm"
+                                type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window"
+                id="act_open_expense_refuse_wizard">
+            <field name="name">Expense Refuse Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.refuse.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

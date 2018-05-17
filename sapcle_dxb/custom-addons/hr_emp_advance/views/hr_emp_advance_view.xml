@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- employee advance form view -->
+    <record id="employee_advance_form_view" model="ir.ui.view">
+        <field name="name">employee.advance.form.view</field>
+        <field name="model">employee.advance</field>
+        <field name="arch" type="xml">
+            <form string="Employee Advance">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="submit_to_manager" type="object"
+                            string="Submit" class="btn-primary"
+                            groups="hr_emp_advance.group_employee_advance_normal_user"
+                            states="draft"/>
+
+                    <button name="%(hr_emp_advance.act_open_advance_refuse_wizard)d"
+                            type="action" string="Refuse"
+                            groups="hr_emp_advance.group_employee_advance_manager"
+                            states='manager_approval,approved'/>
+
+                    <button name="manager_approved" type="object"
+                            string="Verified" class="btn-primary"
+                            groups="hr_emp_advance.group_employee_advance_manager"
+                            states="manager_approval"/>
+
+                    <button name="manager_paid_amount" type="object"
+                            string="Pay" class="btn-primary"
+                            groups="hr_emp_advance.group_employee_finance_manager"
+                            states="approved"/>
+
+                    <button name="manager_canceled" type="object"
+                            string="Cancel"
+                            groups="hr_emp_advance.group_employee_advance_manager"
+                            states="manager_approval"/>
+                </header>
+                <sheet>
+                    <h1 class="mt0">
+                        <field name="name" required="1"
+                               attrs="{'readonly':[('state', '!=', 'draft')]}"
+                               placeholder="Description"
+                               class="oe_inline"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="employee_id"
+                                   readonly="1" required="1"/>
+                            <field name="is_payslip_generated"
+                                   string="Deducted in Payslip"
+                                   groups="hr_emp_advance.group_employee_advance_manager"
+                                   readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="date" required="1" readonly="1"/>
+                            <field name="effective_date"
+                                   string="Allocation Date"
+                                   groups="hr_emp_advance.group_employee_advance_manager"
+                                   attrs="{'readonly':[('state', '!=', 'manager_approval')], 'required': [('state', '=', 'manager_approval')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="amount" required="1"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <group>
+                            <field name="salary_rule_id"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                   help="salary rule with category code 'ADV'."
+                                   domain="[('category_id.code', '=', 'ADV')]"
+                                   options="{'no_open': True,'no_create': True,'no_quick_create': True,'no_create_edit': True}"
+                                   required="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="note_ids" nolabel="1">
+                            <tree editable="bottom" delete="false">
+                                <field name="employee_id" style="width:30%%"
+                                       readonly="1"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <field name="refuse_reason" readonly="1" nolabel="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- employee advance Tree View -->
+    <record id="employee_advance_tree_view" model="ir.ui.view">
+        <field name="name">employee.advance.tree.view</field>
+        <field name="model">employee.advance</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Advance">
+                <field name="name"/>
+                <field name="employee_id"
+                       groups="hr_emp_advance.group_employee_advance_manager"/>
+                <field name="date"/>
+                <field name="effective_date"
+                       groups="hr_emp_advance.group_employee_advance_manager"/>
+                <field name="amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- employee.advance Search View -->
+    <record id="employee_advance_search_view" model="ir.ui.view">
+        <field name="name">employee.advance.search.view</field>
+        <field name="model">employee.advance</field>
+        <field name="arch" type="xml">
+            <search string="Employee Advance">
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="state"/>
+                <filter string="Pending Manager Approvals"
+                        name="pending_manager_approval"
+                        domain="[('state','in',['manager_approval', 'approved'])]"/>
+                <filter name="done"
+                        string="Done"
+                        domain="[('state','in',['done'])]"/>
+                <group expand="0" string="Group By...">
+                    <filter name="group_employee" string="Calendar Year"
+                            context="{'group_by':'employee_id'}"/>
+                    <filter name="state" string="State" icon="terp-go-today"
+                    domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- employee advance action view ess -->
+    <record id="employee_advance_action_view_ess"
+            model="ir.actions.act_window">
+        <field name="name">Employee Advance</field>
+        <field name="res_model">employee.advance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id.user_id.id','=',uid)]</field>
+        <field name="context">{'readonly_by_pass': True}</field>
+    </record>
+
+    <!-- employee advance action view mss -->
+    <record id="employee_advance_action_view_mss"
+            model="ir.actions.act_window">
+        <field name="name">Employee Advance</field>
+        <field name="res_model">employee.advance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_pending_manager_approval':
+            True, 'readonly_by_pass': True}</field>
+    </record>
+
+</odoo>

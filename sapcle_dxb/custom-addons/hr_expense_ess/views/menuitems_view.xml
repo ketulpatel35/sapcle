@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- main menu -->
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_root">
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_expense.group_hr_expense_user')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_my_expenses">
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_expense.group_hr_expense_user')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_sheet_my_reports">
+        <field name="name">Expense Request</field>
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_expense.group_hr_expense_user')])]"/>
+    </record>
+
+    <!-- Admin can see -->
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_my_expenses_to_submit">
+        <field name="groups_id"
+               eval="[(6,0,[ref('base.group_system')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_sheet_my_reports_refused">
+        <field name="groups_id"
+               eval="[(6,0,[ref('base.group_system')])]"/>
+    </record>
+
+    <!-- Manager Can see -->
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_to_approve">
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_expense.group_hr_expense_manager')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_sheet_all_to_approve">
+        <field name="name">Expense Request To Approve</field>
+        <field name="groups_id"
+               eval="[(6,0,[ref('hr_expense.group_hr_expense_manager')])]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <templates id="template" xml:space="preserve">
+        <t t-extend="CalendarView.sidebar.filter">
+            <t t-jquery='.o_calendar_filter_items' t-operation='replace'>
+                <div class="o_calendar_filter">
+                    <h3 t-if="widget.title"><t t-esc="widget.title"/></h3>
+                    <div class="o_calendar_filter_items">
+                        <div t-foreach="widget.filters" t-as="filter" t-if="filter.display == null || filter.display" class="o_calendar_filter_item" t-att-data-value="filter.value" t-att-data-id="filter.id">
+                            <div class="o_checkbox">
+                                <input type="checkbox" name="selection" t-att-checked="(filter.active ? true : undefined)"/><span/>
+                            </div>
+                            <t t-if="filter.value == 'all'">
+                                <span><i class="fa fa-users fa-fw o_cal_avatar"/></span>
+                            </t>
+                            <t t-if="widget.avatar_field &amp;&amp; (filter.value != 'all')">
+                                <img t-attf-src="/web/image/#{widget.avatar_model}/#{filter.value}/#{widget.avatar_field}" class="o_cal_avatar"/>
+                            </t>
+                            <t t-set="color" t-value="widget.getColor(filter.color_index)"/>
+                            <span t-if="typeof color === 'number'" t-attf-class="color_filter o_underline_color_#{widget.getColor(filter.color_index)}"><t t-esc="filter.label"/></span>
+                            <span t-elif="color" t-attf-style="border-bottom: 4px solid #{color};"><t t-esc="filter.label"/></span>
+                            <span t-else=""><t t-esc="filter.label"/></span>
+                            <t t-if="filter.id">
+                                <span class="o_remove fa fa-times" title="Remove this favorite from the list"/>
+                           </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </templates>
+    <!--<template id="web_login_layout_hide_powerd_by" inherit_id="web.login_layout">-->
+        <!--<xpath expr="//div[@class='row']" position="replace">-->
+            <!--<div class="row">-->
+                <!--<div class="col-md-6 col-md-offset-3 o_database_list">-->
+                    <!--<div class="text-center">-->
+                        <!--<img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}"/>-->
+                    <!--</div>-->
+                    <!--<t t-raw="0"/>-->
+                    <!--<div class="text-center" t-if="not disable_footer">-->
+                        <!--<t t-if="not disable_database_manager">-->
+                            <!--<a class="" href="/web/database/manager">Manage Databases</a>-->
+                        <!--</t>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</xpath>-->
+    <!--</template>-->
+<!--</odoo>-->

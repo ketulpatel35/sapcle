@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- invisible type field -->
+    <record id="employee_edit_holiday_status_form" model="ir.ui.view">
+        <field name="name">employee.edit.holiday.status.form</field>
+        <field name="model">hr.holidays.status</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="attachment_mandatory"/>
+                <label for="eligible_months" string="Eligible After"/>
+                <div><field name="eligible_months"/>Months</div>
+            </field>
+        </field>
+    </record>
+
+</odoo>

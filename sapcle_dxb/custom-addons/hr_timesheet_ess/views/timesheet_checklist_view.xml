@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- timesheet checklist form view -->
+    <record id="timesheet_checklist_form_view" model="ir.ui.view">
+        <field name="name">timesheet.checklist.form.view</field>
+        <field name="model">timesheet.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Timesheet Checklist">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="action_submit_to_manager" type="object"
+                            string="Submit to Manager" class="btn-primary"
+                            attrs="{'invisible':['|', ('is_timesheet_generated', '!=', True),('state', '!=', 'draft')]}"
+                            groups="hr_timesheet_ess.group_hr_timesheet_normal_user"/>
+                    <button name="%(hr_timesheet_ess.act_open_timesheet_refuse_wizard)d"
+                        type="action" string="Refuse"
+                        groups="hr_timesheet.group_hr_timesheet_user"
+                        states='manager_approval'/>
+                    <button name="action_manager_approval" type="object"
+                            string="Verified" class="btn-primary"
+                            groups="hr_timesheet.group_hr_timesheet_user"
+                            states="manager_approval"/>
+                    <button name="action_hr_approval" type="object"
+                            string="Approved" class="btn-primary"
+                            groups="hr_timesheet.group_timesheet_manager"
+                            states="hr_approval"/>
+                    <button name="action_generate_revision" type="object"
+                            string="Conflict"
+                            confirm="Are you sure you want to generate timesheet revision?"
+                            groups="hr_timesheet.group_timesheet_manager"
+                            states="hr_approval"/>
+                </header>
+                <sheet>
+                    <h1 class="mt0">
+                        <field name="name" readonly="1"
+                               attrs="{'invisible':[('name', '=', False)]}"
+                               class="oe_inline"/>
+                        <field name="is_timesheet_generated" invisible="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="employee_id"
+                                   readonly="1" required="1"/>
+                            <field name="timesheet_checklist_id"
+                                   readonly="1"
+                                   string="Reference"
+                                   attrs="{'invisible':[('timesheet_checklist_id', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="month"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                   required="1"/>
+                            <field name="year" attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                   required="1"/>
+                        </group>
+                    </group>
+                    <h3>Add Projects</h3>
+                    <group>
+                        <field name="ts_projects_ids"
+                               context="{'month': month, 'year': year}"
+                               attrs="{'readonly':[('state', '!=', 'draft')]}"
+                               nolabel="1">
+                            <tree editable="bottom">
+                                <field name="project_id" required="1"/>
+                                <field name="start_date" required="1"/>
+                                <field name="end_date" required="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <notebook>
+                        <page string="Revised Timesheet"
+                              attrs="{'invisible': [('timesheet_checklist_id', '=', False)]}"
+                              name="revised_timesheet_checklist">
+                            <field name="revised_timesheet_line_ids"
+                                   options="{'no_create': True,'no_quick_create': True}">
+                                <tree editable="bottom">
+                                    <field name="project_id" readonly="1"/>
+                                    <field name="date" readonly="1"/>
+                                    <field name="week_day" readonly="1"/>
+                                    <field name="ts_status" required="1"/>
+                                    <field name="unit_amount"/>
+                                    <field name="remark"/>
+                                    <field name="timesheet_checklist_id"
+                                           invisible="1"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <field name="total_timesheet_hours_in_revised"/>
+                                <field name="revised_timesheet_hours"
+                                       string="Revised Timesheet Total Hours"/>
+                                <field name="difference_hours" class="oe_subtotal_footer_separator"/>
+                                <field name="amount"/>
+                            </group>
+                        </page>
+                        <page string="Timesheet"
+                              attrs="{'invisible': [('timesheet_checklist_id', '!=', False)]}"
+                              name="timesheet_checklist">
+                            <br/>
+                            <group>
+                                <field name="auto_fill"
+                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            </group>
+                            <div>
+                                <button name="action_generate_timesheet" type="object"
+                                        string="Generate Timesheet" class="btn-primary"
+                                        groups="hr_timesheet_ess.group_hr_timesheet_normal_user"
+                                        attrs="{'invisible':['|', ('is_timesheet_generated', '=', True),('state', '!=', 'draft')]}"/>
+                                <button name="action_generate_timesheet" type="object"
+                                        string="Regenerate Timesheet"
+                                        class="btn-primary"
+                                        groups="hr_timesheet_ess.group_hr_timesheet_normal_user"
+                                        attrs="{'invisible':['|', ('is_timesheet_generated', '!=', True),('state', '!=', 'draft')]}"/>
+                            </div>
+                            <br/>
+                            <field name="timesheet_line_ids"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                   options="{'no_create': True,'no_quick_create': True}">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="project_id" readonly="1"/>
+                                    <field name="date" readonly="1"/>
+                                    <field name="week_day" readonly="1"/>
+                                    <field name="ts_status" required="1"/>
+                                    <field name="unit_amount"/>
+                                    <field name="remark"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <field name="total_timesheet_hours"
+                                       class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- timesheet checklist Tree View -->
+    <record id="timesheet_checklist_tree_view" model="ir.ui.view">
+        <field name="name">timesheet.checklist.tree.view</field>
+        <field name="model">timesheet.checklist</field>
+        <field name="arch" type="xml">
+            <tree string="Timesheet Checklist"
+                  default_order='year desc,month desc'>
+                <field name="name"/>
+                <field name="employee_id"
+                       groups="hr_timesheet.group_hr_timesheet_user,hr_timesheet.group_timesheet_manager"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- timesheet checklist search View -->
+    <record id="timesheet_checklist_search_view" model="ir.ui.view">
+        <field name="name">timesheet.checklist.search.view</field>
+        <field name="model">timesheet.checklist</field>
+        <field name="arch" type="xml">
+            <search string="Timesheet">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="state"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="groupby_status"
+                            domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Years" name="groupby_years"
+                            domain="[]" context="{'group_by':'year'}"/>
+                    <filter string="Months" name="groupby_months"
+                            domain="[]" context="{'group_by':'month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- timesheet checklist action View ess -->
+    <record id="timesheet_checklist_action_view"
+            model="ir.actions.act_window">
+        <field name="name">Timesheet Checklist</field>
+        <field name="res_model">timesheet.checklist</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id.user_id.id','=',uid)]</field>
+        <field name="context">{'readonly_by_pass': True}</field>
+    </record>
+
+    <!-- timesheet checklist action View mss -->
+    <record id="mss_timesheet_checklist_action_view"
+            model="ir.actions.act_window">
+        <field name="name">Timesheet Checklist</field>
+        <field name="res_model">timesheet.checklist</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'manager_approval')]</field>
+        <field name="context">{'readonly_by_pass': True}</field>
+    </record>
+
+    <record id="mss_timesheet_checklist_hr_action_view"
+            model="ir.actions.act_window">
+        <field name="name">Timesheet Checklist</field>
+        <field name="res_model">timesheet.checklist</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'hr_approval')]</field>
+        <field name="context">{'readonly_by_pass': True}</field>
+    </record>
+
+    <record id="mss_timesheet_checklist_all_action_view"
+            model="ir.actions.act_window">
+        <field name="name">Timesheet Checklist</field>
+        <field name="res_model">timesheet.checklist</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'readonly_by_pass': True}</field>
+    </record>
+
+
+</odoo>
